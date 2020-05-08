@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         createacc= (Button) findViewById(R.id.btnsign);
         Forg= (Button) findViewById(R.id.forgetpass);
 
-        handler.postDelayed(runnable, 2000);//2000 time of splach
+        handler.postDelayed(runnable, 4000);//2000 time of splach
 
 
 
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         createacc.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent=new Intent(getApplicationContext(), SignupActivity.class);
+            Intent intent=new Intent(getApplicationContext(), SignupActivity1.class);
             startActivity(intent);
             finish();
         }

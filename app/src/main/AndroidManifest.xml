@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -22,9 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+        >
 
         </activity>
+        <activity android:name=".SignupActivity1"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".SignupActivity2"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+    </activity>
+        <activity android:name=".addMaisonActivity2"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".addMaisonActivity3"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyD8pyJrE2PHovpjJZO0G0rFGoMKN_tMB3Y"/>
     </application>
