@@ -46,7 +46,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
+    Forg.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View view) {
+            Toast.makeText(LoginActivity.this,"Ooh forgotten password ",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(LoginActivity.this,ForgotPassActivity1.class));
+            finish();
+        }});
 
     login.setOnClickListener(new View.OnClickListener() {
         public void onClick(View view) {
@@ -75,4 +80,5 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     });
+
 } }

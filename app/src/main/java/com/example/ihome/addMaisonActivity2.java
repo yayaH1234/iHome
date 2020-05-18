@@ -231,4 +231,5 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
 }

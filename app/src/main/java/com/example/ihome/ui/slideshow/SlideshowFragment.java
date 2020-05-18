@@ -65,11 +65,11 @@ public class SlideshowFragment extends Fragment  {
                 if(!NmMs.equals("") && !NmOw.equals("") && !tyServ.equals("") && !adrs.equals("") && !pr.equals("")){
                     Toast.makeText(getActivity(),"First step successfully completed  ",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getActivity(), addMaisonActivity2.class);
-                    /*intent.putExtra("Mais_name",NmMs);
+                    intent.putExtra("Mais_name",NmMs);
                     intent.putExtra("Owner_name", NmOw);
                     intent.putExtra("Service", tyServ);
                     intent.putExtra("adress", adrs);
-                    intent.putExtra("Price", pr);*/
+                    intent.putExtra("Price", pr);
 
                     startActivity(intent);
                 }

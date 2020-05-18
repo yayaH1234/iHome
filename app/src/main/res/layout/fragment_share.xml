@@ -2,19 +2,100 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/text_share"
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/grad_bg"
+    >
+
+        <RelativeLayout
+                android:id="@+id/rellay2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+        >
+
+            <ImageView
+                    android:id="@+id/ImgView_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo" android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" android:layout_alignParentTop="true"
+                    android:layout_marginEnd="118dp" android:layout_marginTop="0dp" android:layout_marginRight="118dp"/>
+            <RelativeLayout
+                    android:id="@+id/rellay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_below="@+id/ImgView_logo">
+
+
+                <LinearLayout
+                        android:id="@+id/linlay1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                        <TextView
+                                android:id="@+id/text1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="That's a good initiative from you to help us."
+                                android:textColor="@color/white"
+                                android:textSize="30sp" />
+                        <TextView
+                                android:id="@+id/text2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="If you are sure to this action click on this Button."
+                                android:textColor="@color/white"
+                                android:textSize="30sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <Button
+                        android:id="@+id/text_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linlay1"
+                        android:layout_marginTop="50dp"
+                        android:text="Share Now"
+                        android:textColor="@color/white"
+                        android:fontFamily="sans-serif-medium"
+                        android:background="@drawable/btn_bg"
+                        android:paddingLeft="70dp"
+                        android:paddingRight="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+
+                />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
