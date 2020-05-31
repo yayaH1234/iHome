@@ -23,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,14 +49,14 @@ public class SignupActivity2 extends AppCompatActivity {
     ImageView image;
     String Email;
     Button choose, upload;
+    EditText NumTel;
     int PICK_IMAGE_REQUEST = 111;
-    String URL ="http://192.168.1.108:8080/user/signup2";
+    String URL= AllUrls.sign2Url;
+  //  String URL ="http://192.168.1.108:8080/user/signup2";
     Bitmap bitmap;
     ProgressDialog progressDialog;
-
     private static int RESULT_LOAD_IMAGE = 1;
     final int IMG_REQUEST = 10000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,19 +65,14 @@ public class SignupActivity2 extends AppCompatActivity {
         image = (ImageView)findViewById(R.id.image);
         choose = (Button)findViewById(R.id.choose_image_btn);
         upload = (Button)findViewById(R.id.next);
-
-
-
+        NumTel = (EditText) findViewById(R.id.telephone);
         Bundle extras = getIntent().getExtras();
         Email = extras.getString("Email");
-
-
 
         //opening image chooser option
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
@@ -89,24 +86,166 @@ public class SignupActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                Signup(Email);
+            //    Signup(Email);
+                signup2(bitmap,Email);
             }
         });
     }
 
 
+
+
+
+
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        int nh = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, nh, true);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        scaled.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+  /*  private String imageToString(Bitmap bitmap){
+
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+
+
+        byte[] imageBytes=byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageBytes,Base64.DEFAULT);
+    }*/
+    String path;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+
+            Uri selectedImage = data.getData();
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                image.setImageBitmap(bitmap);
+                path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+                choose.setText(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+      /*     Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+    //        ImageView imageView = (ImageView) findViewById(R.id.imgView);
+            image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+        }*/
+
+
+    }
+
+}
+
+    private void signup2(final Bitmap imageBitmap,final String emaill) {
+
+        String requestURL = AllUrls.sign2Url;
+
+
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST,requestURL ,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        try {
+                            JSONObject obj = new JSONObject(new String(response.data));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //      Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", emaill);
+
+                final String numer=NumTel.getText().toString().trim();
+                params.put("num",numer );
+
+
+                return params;
+            }
+
+            /*
+             * Here we are passing image by renaming it with a unique name
+             * */
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("img", new DataPart(imagename + ".png", getFileDataFromDrawable(imageBitmap)));
+                return params;
+            }
+        };
+
+        //adding the request to volley
+        Volley.newRequestQueue(getApplicationContext()).add(volleyMultipartRequest);
+        Toast.makeText ( SignupActivity2.this,"secondly step successfully completed",Toast.LENGTH_SHORT ).show ();
+     //   Intent intent=new Intent(SignupActivity2.this,LoginActivity.class);
+        Intent intent=new Intent(SignupActivity2.this,SignupActivity3.class);
+        intent.putExtra("num", NumTel.getText().toString());
+        intent.putExtra("Email",Email);
+        startActivity(intent);
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
     public void Signup(final String Email){
-
-
-
-        String URL ="http://192.168.1.108:8080/user/signup2";
-
-
+        //  String URL ="http://192.168.1.108:8080/user/signup2";
+        String URL =AllUrls.sign2Url;
         StringRequest stringRequest=new StringRequest ( Request.Method.POST ,
                 URL , new Response.Listener <String> () {
-
-
             @Override
             public void onResponse(String response) {
                 Log.i("tagconvertstr", "["+response+"]");
@@ -193,78 +332,7 @@ public class SignupActivity2 extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
-    private String imageToString(Bitmap bitmap){
-
-        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
-
-
-
-
-
-        byte[] imageBytes=byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes,Base64.DEFAULT);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-    //        ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-        }
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 /*
 import android.Manifest;
 import android.content.Intent;

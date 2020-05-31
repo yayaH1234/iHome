@@ -15,7 +15,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +31,11 @@ public class ForgotPassActivity1 extends AppCompatActivity {
 
     private EditText email;
     private Button valid;
+
+
+
+    private String res[]=null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -36,46 +45,64 @@ public class ForgotPassActivity1 extends AppCompatActivity {
         email = (EditText) findViewById(R.id.replyquest);
         valid = (Button) findViewById(R.id.valid);
 
+
+
+        // Instantiate the RequestQueue.
+        final RequestQueue queue =Singleton.getInstance(ForgotPassActivity1.this).getRequestQueue();// Volley.newRequestQueue(this);
+
+        final String url =AllUrls.getlistemail;
+
+        // Request a string response from the provided URL.
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        //textView.setText("Response is: "+ response.substring(0,500));
+
+
+
+
+
+                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+
+
+
+
+
+
+    }
+}, new Response.ErrorListener() {
+@Override
+public void onErrorResponse(VolleyError error) {
+        // textView.setText("That didn't work!");
+        Toast.makeText(getApplicationContext(), "Error Server", Toast.LENGTH_SHORT).show();
+        }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stremail = email.getText().toString();
 
+                final String stremail = email.getText().toString();
 
-                final String url = "http://192.168.1.108:8080/custommer/listemail";
-
-                final RequestQueue request = Volley.newRequestQueue(ForgotPassActivity1.this);
-                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url,new Response.Listener<JSONArray>()
-                {
-
-                    @Override
-                    public void onResponse(JSONArray response)
-                    {
-                        List<String> result = new ArrayList<String>();
-                        for (int i = 0; i < response.length(); i++)
-                        {
-                            try
-                            {
-                                result.add(response.getJSONObject(i).toString());
-                                Toast.makeText(ForgotPassActivity1.this,result.get(0),Toast.LENGTH_LONG).show();
-                            }
-                            catch (JSONException e)
-                            {
-
-                            }
-                        }
+                int m=0;
+                for(int o=0;o<res.length;o++){
+                    String eso=res[o];
+                    Log.d("ForgotPassActivity","------------------->"+eso);
+                    if(eso.equals("\""+stremail+"\"")){
+                        Toast.makeText(ForgotPassActivity1.this,"email existed",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ForgotPassActivity1.this,ForgotPassActivity2.class);
+                        intent.putExtra("email", stremail);
+                        startActivity(intent);
+                        finish();
                     }
-                }, new Response.ErrorListener()
-                {
+                }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        // Handle error
-                    }
-                });
-
-                request.add(jsonArrayRequest);
 
 
                /* Intent intent = new Intent(getBaseContext(), ForgotPassActivity2.class);

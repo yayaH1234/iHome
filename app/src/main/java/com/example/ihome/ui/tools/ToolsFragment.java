@@ -28,6 +28,9 @@ public class ToolsFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
+
+
+
         return root;
     }
 }

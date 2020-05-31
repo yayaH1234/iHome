@@ -84,10 +84,7 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
     private double latitude,longitude;
 
 
-
-    private ArrayList<String> allLatitude = new ArrayList<>();
-    private ArrayList<String> allLongitude= new ArrayList<>();
-    private ArrayList<String> alltitle = new ArrayList<>();
+    private String res[]=null;
 
 
 
@@ -228,7 +225,7 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
         LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
         MarkerOptions markerOptions=new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("user curent location");
+        markerOptions.title("User curent location");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         currentUserLocationMarker=mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -275,7 +272,7 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         mMap=googleMap;
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
 
@@ -287,47 +284,77 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
         }
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.1.108:8080/maison/listmbyserv/locattion";
+        RequestQueue queue =Singleton.getInstance(this).getRequestQueue();// Volley.newRequestQueue(this);
+        String url =AllUrls.listNearbyhomeMForRent;
 
 
 
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                 new Response.Listener<String>() {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         //textView.setText("Response is: "+ response.substring(0,500));
                         Toast.makeText(getApplicationContext(), "Getting nearby succes", Toast.LENGTH_SHORT).show();
 
-                        try {
+             /*           try {
                             JSONArray jsonArray = new JSONArray(response);
-                                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                allLatitude.add((String) jsonObject.get("attitude"));
-                                allLongitude.add((String) jsonObject.getString("longiture"));
-                                alltitle.add((String) jsonObject.getString("adress"));
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            allLatitude.add((String) jsonObject.get("attitude"));
+                            allLongitude.add((String) jsonObject.getString("longiture"));
+                            alltitle.add((String) jsonObject.getString("adress"));
 
-                                Toast.makeText(mapForRentActivity.this,"latt"+jsonObject.toString(),Toast.LENGTH_SHORT).show();
+                            //                        Toast.makeText(mapForRentActivity.this,"latt"+jsonObject.toString(),Toast.LENGTH_SHORT).show();
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                */
 
+                        Log.d("mapForRentActivity","response server   "+response.toString());
+                        System.out.println("------------------->"+response.toString());
                         Toast.makeText(mapForRentActivity.this,"latt"+response.toString(),Toast.LENGTH_SHORT).show();
-                        Toast.makeText(mapForRentActivity.this,"latt"+allLatitude.toString(),Toast.LENGTH_SHORT).show();
-                        Toast.makeText(mapForRentActivity.this,"latt"+allLongitude.toString(),Toast.LENGTH_SHORT).show();
-                        Toast.makeText(mapForRentActivity.this,"latt"+alltitle.toString(),Toast.LENGTH_SHORT).show();
 
+
+                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+                        int i=0;
+                        while(i<res.length-1) {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.title(res[i]);
+
+                            Log.d("mapForRentActivity","Adding title "+i);
+                            i++;
+                            double d1=Double.parseDouble(res[i].toString());
+
+                            Log.d("mapForRentActivity","valeur d1 "+d1);
+                            double d2=Double.parseDouble(res[i+1].toString());
+                            Log.d("mapForRentActivity","valeur d2 "+d2);
+                            LatLng latLng=new LatLng(d1,d2);
+
+                            Log.d("mapForRentActivity","Adding Marker "+i);
+                            markerOptions.position(latLng);
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                            googleMap.addMarker(markerOptions);
+                        i+=2;
+                        }
+
+
+
+/*                      Toast.makeText(mapForRentActivity.this,"latt"+allLatitude.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mapForRentActivity.this,"long"+allLongitude.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mapForRentActivity.this,"addrs"+alltitle.toString(),Toast.LENGTH_SHORT).show();
+*/
 
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // textView.setText("That didn't work!");
+                // textView.setText("That didn't work!");
                 Toast.makeText(getApplicationContext(), "Error Getting nearby", Toast.LENGTH_SHORT).show();
             }
         });
@@ -335,7 +362,36 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
 
+                Toast.makeText(mapForRentActivity.this,"For more information, re-tape marker.",Toast.LENGTH_LONG).show();
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Toast.makeText(mapForRentActivity.this,"Please click on the house  ",Toast.LENGTH_LONG).show();
+
+                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+                                String maisName = marker.getTitle();
+                                Intent intent = new Intent(mapForRentActivity.this, maisonshowActivity.class);
+                                intent.putExtra("Mais_name", maisName);
+                                startActivity(intent);
+
+                                return true;
+                            }
+                        });
+
+                        return true;
+                    }
+                });
+
+                return true;
+            }
+        });
 
 
     }

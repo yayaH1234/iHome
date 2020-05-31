@@ -24,6 +24,12 @@ import android.widget.Toolbar;
 
 
 import androidx.core.content.ContextCompat;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.LocationListener;
 
 
@@ -56,6 +62,11 @@ public class mapForSellActivity extends FragmentActivity implements LocationList
     private GoogleMap mMap;
 
     private Location location;
+
+
+    private String res[]=null;
+
+
 
     private GoogleApiClient googleApiClient;
 
@@ -209,8 +220,9 @@ public class mapForSellActivity extends FragmentActivity implements LocationList
         }
         LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
         MarkerOptions markerOptions=new MarkerOptions();
+
         markerOptions.position(latLng);
-        markerOptions.title("user curent location");
+        markerOptions.title("User curent location");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         currentUserLocationMarker=mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -218,7 +230,6 @@ public class mapForSellActivity extends FragmentActivity implements LocationList
         if(googleApiClient!=null){
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
         }
-
 
 
     }
@@ -268,8 +279,117 @@ public class mapForSellActivity extends FragmentActivity implements LocationList
 
         }
 
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Singleton.getInstance(this).getRequestQueue();
+        String url =AllUrls.listNearbyhomeMForSell;
 
 
+
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        //textView.setText("Response is: "+ response.substring(0,500));
+                        Toast.makeText(getApplicationContext(), "Getting nearby succes", Toast.LENGTH_SHORT).show();
+
+             /*           try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            allLatitude.add((String) jsonObject.get("attitude"));
+                            allLongitude.add((String) jsonObject.getString("longiture"));
+                            alltitle.add((String) jsonObject.getString("adress"));
+
+                            //                        Toast.makeText(mapForRentActivity.this,"latt"+jsonObject.toString(),Toast.LENGTH_SHORT).show();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                */
+
+                        Log.d("mapForRentActivity","response server   "+response.toString());
+                        System.out.println("------------------->"+response.toString());
+                        Toast.makeText(mapForSellActivity.this,"latt"+response.toString(),Toast.LENGTH_SHORT).show();
+
+
+                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+                        int i=0;
+                        while(i<res.length-1) {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.title(res[i]);
+
+                            Log.d("mapForRentActivity","Adding title "+i);
+                            i++;
+                            double d1=Double.parseDouble(res[i].toString());
+
+                            Log.d("mapForRentActivity","valeur d1 "+d1);
+                            double d2=Double.parseDouble(res[i+1].toString());
+                            Log.d("mapForRentActivity","valeur d2 "+d2);
+                            LatLng latLng=new LatLng(d1,d2);
+
+                            Log.d("mapForRentActivity","Adding Marker "+i);
+                            markerOptions.position(latLng);
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+                            mMap.addMarker(markerOptions);
+                            i+=2;
+                        }
+
+
+
+/*                      Toast.makeText(mapForRentActivity.this,"latt"+allLatitude.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mapForRentActivity.this,"long"+allLongitude.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mapForRentActivity.this,"addrs"+alltitle.toString(),Toast.LENGTH_SHORT).show();
+*/
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // textView.setText("That didn't work!");
+                Toast.makeText(getApplicationContext(), "Error Getting nearby", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                Toast.makeText(mapForSellActivity.this,"For more information, re-tape marker.",Toast.LENGTH_LONG).show();
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Toast.makeText(mapForSellActivity.this,"Please click on the house  ",Toast.LENGTH_LONG).show();
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        String maisName = marker.getTitle();
+                        Intent intent = new Intent(mapForSellActivity.this, maisonshowActivity.class);
+                        intent.putExtra("Mais_name", maisName);
+                        startActivity(intent);
+
+                        return true;
+                    }
+                });
+
+                        return true;
+                    }
+                });
+
+                return true;
+            }
+        });
 
 
     }

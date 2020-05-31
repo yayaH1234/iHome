@@ -12,7 +12,7 @@
     <string name="menu_slideshow">Add service</string>
     <string name="menu_tools">Profile</string>
     <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_send">Log out</string>
 
 
     <string name="normal_map">Carte Normale</string>
@@ -20,4 +20,14 @@
     <string name="satellite_map">Carte satellite</string>
     <string name="terrain_map">Carte de terrain</string>
     <string name="que_cherchez_vous">Que cherchez-vous?</string>
+
+
+
+    <string-array name="lit">
+        <item>Mother\'s name?</item>
+        <item>How many brother did you have?</item>
+        <item>What is your jobs?</item>
+        <item>Your favorite food?</item>
+    </string-array>
+
 </resources>

@@ -28,7 +28,7 @@ public class SendFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
-
+     
 
 
 

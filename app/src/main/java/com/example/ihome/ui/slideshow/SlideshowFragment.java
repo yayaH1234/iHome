@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,11 +26,17 @@ public class SlideshowFragment extends Fragment  {
 
     private Button Next;
 
+
+
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private String type;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
                 ViewModelProviders.of( this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+        final View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
       /*  final TextView textView = root.findViewById(R.id.text_slideshow);
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -43,20 +47,33 @@ public class SlideshowFragment extends Fragment  {
 
         Nom_mais= (EditText) root.findViewById(R.id.homename);
         NomOwner= (EditText) root.findViewById(R.id.ownername);
-        Service_type = (EditText) root.findViewById(R.id.service);
+  //    Service_type = (EditText) root.findViewById(R.id.service);
         adress= (EditText) root.findViewById(R.id.adresss);
         price = (EditText) root.findViewById(R.id.price);
 
 
+
         Next = (Button) root.findViewById(R.id.next);
+
+
+
 
         Next.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+
+                radioGroup = (RadioGroup) root.findViewById(R.id.radio);
+                // get selected radio button from radioGroup
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                // find the radiobutton by returned id
+                radioButton = (RadioButton) root.findViewById(selectedId);
+
+                type=radioButton.getText().toString();
+
                 String NmMs=Nom_mais.getText().toString();
                 String NmOw=NomOwner.getText().toString();
-                String tyServ=Service_type.getText().toString();
+                String tyServ=radioButton.getText().toString();//Service_type.getText().toString();
                 String adrs=adress.getText().toString();
                 String pr=price.getText().toString();
                 if(NmMs.equals("") || NmOw.equals("") || tyServ.equals("") || adrs.equals("") || pr.equals("")){

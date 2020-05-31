@@ -33,15 +33,21 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
     private MapFragment mapFragment;
     private GoogleMap googleMap;
     //widget
-    private MarkerOptions Moi, voiture;
+    private MarkerOptions Moi;
     private Button param;
     private String TAG="MainActivity";
-    private static final float DEFAULT_ZOOM = 15f;
-    private Location locat=null;
 
 
 
     private Button back;
+
+    private String mais_name;
+    private String owner_name;
+    private String service ;
+    private String adress ;
+    private String Price;
+    private String lat;
+    private String lng;
 
 
 
@@ -49,6 +55,15 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmaison2);
+
+
+        Bundle extras = getIntent().getExtras();
+
+        mais_name =extras.getString("Mais_name");
+        owner_name = extras.getString("Owner_name");
+        service=  extras.getString("Service");
+        adress=  extras.getString("adress");
+        Price = extras.getString("Price");
 
         FragmentManager fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.map);
@@ -136,9 +151,6 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
                 //location.
 
 
-
-
-
             }
         });
 
@@ -153,10 +165,10 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
     public void onStatusChanged(String provider,int status,Bundle extras){
 
     }
-    public void onLocationChanged(Location location){
+    public void onLocationChanged(final Location location){
 
-        double latitude=location.getLatitude();
-        double longitude=location.getLongitude();
+        final double latitude=location.getLatitude();
+        final double longitude=location.getLongitude();
         Log.d(TAG, "Vos coordonnées"+latitude+"/"+longitude);
         Moi = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Moi");
         LatLng googleLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -180,7 +192,16 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
                     public void onMapClick(LatLng latLng) {
                         final Marker posMais=googleMap.addMarker(new MarkerOptions().position(new LatLng(latLng.latitude,latLng.longitude)).title("Your house"));
                         Intent intent = new Intent(getBaseContext(), addMaisonActivity3.class);
-
+                        intent.putExtra("Mais_name",mais_name);
+                        intent.putExtra("Owner_name", owner_name);
+                        intent.putExtra("Service", service);
+                        intent.putExtra("adress", adress);
+                        intent.putExtra("Price", Price);
+                        lat=location.getLatitude()+"";
+                        lng=location.getLongitude()+"";
+                        Toast.makeText(addMaisonActivity2.this,lat+" "+lng,Toast.LENGTH_LONG).show();
+                        intent.putExtra("lat",lat);
+                        intent.putExtra("lng",lng);
                         startActivity(intent);
                         finish();
                     }

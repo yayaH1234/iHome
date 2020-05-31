@@ -89,7 +89,8 @@ public class SignupActivity1 extends AppCompatActivity {
 
 
 
-                    String requestUrl = "http://192.168.1.108:8080/user/signup1";
+             //       String requestUrl = "http://192.168.1.108:8080/user/signup1";
+                    String requestUrl = AllUrls.sign1Url;
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
