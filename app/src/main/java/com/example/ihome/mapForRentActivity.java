@@ -20,9 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -58,7 +58,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class mapForRentActivity extends FragmentActivity implements LocationListener,
+public class mapForRentActivity extends AppCompatActivity implements LocationListener,
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -106,6 +106,8 @@ public class mapForRentActivity extends FragmentActivity implements LocationList
         mapFragment.getMapAsync(this);
 
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
 
 

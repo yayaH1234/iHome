@@ -4,17 +4,27 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.ihome.ui.slideshow.SlideshowFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +45,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
+
+    String res[];
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -64,6 +76,55 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // Instantiate the RequestQueue.
+        final RequestQueue queue = Singleton.getInstance(MainActivity.this).getRequestQueue();// Volley.newRequestQueue(this);
+
+        final String url = AllUrls.userinformationtool+"z";
+
+        // Request a string response from the provided URL.
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        //textView.setText("Response is: "+ response.substring(0,500));
+
+
+
+
+
+                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+
+                        Toast.makeText(MainActivity.this, res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4], Toast.LENGTH_SHORT).show();
+
+
+                        TextView eml=(TextView)findViewById(R.id.textView);
+                        TextView nameuser=(TextView)findViewById(R.id.nmUser);
+                        ImageView imageView =(ImageView) findViewById(R.id.imageView);
+
+                        nameuser.setText(res[5]);
+                        eml.setText(res[3]);
+
+                        byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        imageView.setImageBitmap(decodedByte);
+                        Log.d("MainActivity","-------------------------------> information "+response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // textView.setText("That didn't work!");
+                Toast.makeText(MainActivity.this, "Error Server", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
     }
 
     @Override

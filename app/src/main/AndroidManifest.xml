@@ -52,10 +52,10 @@
                   android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".mapForRentActivity" >
+        <activity android:name=".mapForRentActivity" android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".mapForSellActivity" >
+        <activity android:name=".mapForSellActivity" android:theme="@style/AppTheme.NoActionBar">
 
          </activity>
         <activity android:name=".ForgotPassActivity1"

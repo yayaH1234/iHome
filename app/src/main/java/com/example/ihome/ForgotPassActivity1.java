@@ -48,7 +48,7 @@ public class ForgotPassActivity1 extends AppCompatActivity {
 
 
         // Instantiate the RequestQueue.
-        final RequestQueue queue =Singleton.getInstance(ForgotPassActivity1.this).getRequestQueue();// Volley.newRequestQueue(this);
+        RequestQueue queue =Singleton.getInstance(ForgotPassActivity1.this).getRequestQueue();// Volley.newRequestQueue(this);
 
         final String url =AllUrls.getlistemail;
 
