@@ -44,6 +44,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     String res[];
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
   //      Toolbar toolbar = findViewById(R.id.toolbar);
 /*   setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -80,37 +84,60 @@ public class MainActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
         final RequestQueue queue = Singleton.getInstance(MainActivity.this).getRequestQueue();// Volley.newRequestQueue(this);
 
-        final String url = AllUrls.userinformationtool+"z";
-
+        final String url = AllUrls.userinformationtool+"grub@gmail.com";
+        final String id ;
+        final String name;
+        final String email ;
         // Request a string response from the provided URL.
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        //textView.setText("Response is: "+ response.substring(0,500));
+                        try {
+                            JSONObject jo = new JSONObject(response);
+                            String id = jo.getString("id");
+
+                           String  name =jo.getString("nom");
+                          String   email = jo.getString("email");
+                            JSONObject imagedbjson = jo.getJSONObject("imagedp");
+                          String imagedp=imagedbjson.getString("data");
+                            TextView eml=(TextView)findViewById(R.id.textView);
+                            TextView nameuser=(TextView)findViewById(R.id.nmUser);
+                            ImageView imageView =(ImageView) findViewById(R.id.imageView);
+
+                            byte[] decodedString = Base64.decode(imagedp, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            nameuser.setText(name);
+                            eml.setText(email);
+                            Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+                            imageView.setImageBitmap(decodedByte);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+
+//                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
 
 
 
 
 
-                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+                      //  TextView eml=(TextView)findViewById(R.id.textView);
+                       // TextView nameuser=(TextView)findViewById(R.id.nmUser);
+                     //   ImageView imageView =(ImageView) findViewById(R.id.imageView);
 
+                      //  nameuser.setText(res[5]);
 
-                        Toast.makeText(MainActivity.this, res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4], Toast.LENGTH_SHORT).show();
+                    //    eml.setText(res[3]);
 
+                       // byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
+                   //     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                        TextView eml=(TextView)findViewById(R.id.textView);
-                        TextView nameuser=(TextView)findViewById(R.id.nmUser);
-                        ImageView imageView =(ImageView) findViewById(R.id.imageView);
-
-                        nameuser.setText(res[5]);
-                        eml.setText(res[3]);
-
-                        byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                        imageView.setImageBitmap(decodedByte);
+                    //    imageView.setImageBitmap(decodedByte);
                         Log.d("MainActivity","-------------------------------> information "+response.toString());
 
                     }

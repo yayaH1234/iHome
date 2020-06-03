@@ -3,7 +3,8 @@ package com.example.ihome;
 public class AllUrls {
 
     //users (Custommers)
-    private static String iphoste="192.168.1.108";
+  //  private static String iphoste="192.168.1.108";Ù
+    private static String iphoste="10.0.0.1";
 
     public static String sign1Url =  "http://"+iphoste+":8080/custommer/signup1";
     public static String sign2Url ="http://"+iphoste+":8080/custommer/signup2";
@@ -12,6 +13,10 @@ public class AllUrls {
 //[{"id":"5ec2e63a283bbe57a09183d7","nom_mais":"jvjgj","nom_prop":"jfjfjf","nom_loc":null,"type_serv":"jfjfjf","adress":"jvjv","attitude":"null","longiture":"null","prix_serv":"66","imagedp"
  //   id nom_mais , nom_prop , nom_loc , type_serv , adress ,attitude  , longitude , prix_serv , imagedp
     //maison
+
+
+    //{"id":"441495","prenom":"ta","email":"grub@gmail.com","password":"grub","numeroTel":null,"imagedp":{"type":0,"data":"Ur/9k="},"repsec":null,"questSec":null,"nom":"yahya"}
+
     public static String addMaisonUrl = "http://"+iphoste+":8080/maison/addM";
     public static String listMaisonUrl = "http://"+iphoste+":8080/maison/get";
 
@@ -28,5 +33,6 @@ public class AllUrls {
 
     public static String achatMs="http://"+iphoste+":8080/maison/achat/";
 
-    public static String userinformationtool="http://"+iphoste+":8080/custommer/userpro/";
+   // public static String userinformationtool="http://"+iphoste+":8080/custommer/userpro/";
+    public static String userinformationtool="http://"+iphoste+":8080/custommer/listuser/";
 }

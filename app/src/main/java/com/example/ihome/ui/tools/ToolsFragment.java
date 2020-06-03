@@ -25,6 +25,11 @@ import com.example.ihome.AllUrls;
 import com.example.ihome.ForgotPassActivity1;
 import com.example.ihome.R;
 import com.example.ihome.Singleton;
+import com.example.ihome.models.MaisonModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ToolsFragment extends Fragment {
 
@@ -68,38 +73,53 @@ public class ToolsFragment extends Fragment {
         // Instantiate the RequestQueue.
         final RequestQueue queue = Singleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();// Volley.newRequestQueue(this);
 
-        final String url = AllUrls.userinformationtool+"z";
+        final String url = AllUrls.userinformationtool+"fadi@gmail.com";
 
         // Request a string response from the provided URL.
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        //textView.setText("Response is: "+ response.substring(0,500));
+
+                        try {
+                            JSONObject jo = new JSONObject(response);
+                                String  id = jo.getString("id");
+                                String nom =jo.getString("nom");
+                                String prenom = jo.getString("prenom");
+                                JSONObject imagedbjson = jo.getJSONObject("imagedp");
+                                String imagedp=imagedbjson.getString("data");
+                            byte[] decodedString = Base64.decode(imagedp, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                            nameuser.setText(jo.getString("nom").toString());
+                            numtel.setText(jo.getString("numeroTel"));
+                            eml.setText(jo.getString("email"));
+                            imageView.setImageBitmap(decodedByte);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
 
 
+                   //     res=response.toString().substring(1, response.toString().length() - 1).split(",");
 
 
-
-                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
-
-
-                        Toast.makeText(getContext(), res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4], Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getContext(), res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4], Toast.LENGTH_SHORT).show();
+//oast.makeText(getContext(),"hi"+ jo.getString("email"), Toast.LENGTH_LONG).show();
 
 
+                    //    offreForuser.setText(res[0]);
+                      //  userpub.setText(res[1]);
+               //         nameuser.setText(jo.getString("nom").toString());
+                    //    numtel.setText(res[4]);
+                     //   passwd.setText(res[6]);
+                    //    eml.setText(res[3]);
 
-                        offreForuser.setText(res[0]);
-                        userpub.setText(res[1]);
-                        nameuser.setText(res[5]);
-                        numtel.setText(res[4]);
-                        passwd.setText(res[6]);
-                        eml.setText(res[3]);
+                 //      byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
+                 //       byte[] decodedString = res[2].getBytes();
+              //       Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                        byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                        imageView.setImageBitmap(decodedByte);
+                //        imageView.setImageBitmap(decodedByte);
 
 
                     }
