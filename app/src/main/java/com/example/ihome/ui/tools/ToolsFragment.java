@@ -1,5 +1,6 @@
 package com.example.ihome.ui.tools;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -21,10 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.ihome.AllUrls;
-import com.example.ihome.ForgotPassActivity1;
-import com.example.ihome.R;
-import com.example.ihome.Singleton;
+import com.example.ihome.*;
 import com.example.ihome.models.MaisonModel;
 
 import org.json.JSONArray;
@@ -45,6 +43,10 @@ public class ToolsFragment extends Fragment {
     private TextView numtel;
     private TextView passwd ;
     private TextView eml ;
+    private TextView interactwithpub;
+
+    private String password;
+    private int i=0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,11 +71,17 @@ public class ToolsFragment extends Fragment {
         numtel = (TextView) root.findViewById(R.id.telnum);
         passwd = (TextView) root.findViewById(R.id.passwordforuser);
         eml = (TextView) root.findViewById(R.id.mailuse);
+        interactwithpub = (TextView) root.findViewById(R.id.intwp);
 
         // Instantiate the RequestQueue.
         final RequestQueue queue = Singleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();// Volley.newRequestQueue(this);
 
-        final String url = AllUrls.userinformationtool+"fadi@gmail.com";
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        Toast.makeText(getActivity(),"Your email "+extras.getString("email"),Toast.LENGTH_LONG).show();
+
+
+        final String url = AllUrls.userinformationtool+extras.getString("email");
 
         // Request a string response from the provided URL.
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -85,6 +93,7 @@ public class ToolsFragment extends Fragment {
                             JSONObject jo = new JSONObject(response);
                                 String  id = jo.getString("id");
                                 String nom =jo.getString("nom");
+                                password =jo.getString("password");
                                 String prenom = jo.getString("prenom");
                                 JSONObject imagedbjson = jo.getJSONObject("imagedp");
                                 String imagedp=imagedbjson.getString("data");
@@ -133,6 +142,88 @@ public class ToolsFragment extends Fragment {
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+
+        // Instantiate the RequestQueue.
+        final RequestQueue queue2 = Singleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();// Volley.newRequestQueue(this);
+
+        final String url2 = AllUrls.userinformationtool2+"z";
+
+        // Request a string response from the provided URL.
+        final StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+/*
+                        try {
+                            JSONObject jo = new JSONObject(response);
+                            String  id = jo.getString("id");
+                            String nom =jo.getString("nom");
+                            String prenom = jo.getString("prenom");
+                            JSONObject imagedbjson = jo.getJSONObject("imagedp");
+                            String imagedp=imagedbjson.getString("data");
+                            byte[] decodedString = Base64.decode(imagedp, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                            nameuser.setText(jo.getString("nom").toString());
+                            numtel.setText(jo.getString("numeroTel"));
+                            eml.setText(jo.getString("email"));
+                            imageView.setImageBitmap(decodedByte);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+*/
+                             res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+
+                        //   Toast.makeText(getContext(), res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4], Toast.LENGTH_SHORT).show();
+//oast.makeText(getContext(),"hi"+ jo.getString("email"), Toast.LENGTH_LONG).show();
+
+
+                            offreForuser.setText(res[0]);
+                          userpub.setText(res[1]);
+                        //         nameuser.setText(jo.getString("nom").toString());
+                        //    numtel.setText(res[4]);
+                        //   passwd.setText(res[6]);
+                        //    eml.setText(res[3]);
+
+                        //      byte[] decodedString = Base64.decode(res[2], Base64.DEFAULT);
+                        //       byte[] decodedString = res[2].getBytes();
+                        //       Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        //        imageView.setImageBitmap(decodedByte);
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // textView.setText("That didn't work!");
+                Toast.makeText(getContext(), "Error Server 2   ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue2.add(stringRequest2);
+
+        passwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i++;
+                if(i%2!=0){
+                    passwd.setText(password);
+                }else{passwd.setText("*******");}
+            }
+        });
+        interactwithpub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), modOrDelActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return root;
     }

@@ -4,7 +4,7 @@ public class AllUrls {
 
     //users (Custommers)
   //  private static String iphoste="192.168.1.108";Ù
-    private static String iphoste="10.0.0.1";
+    private static String iphoste="192.168.1.107";
 
     public static String sign1Url =  "http://"+iphoste+":8080/custommer/signup1";
     public static String sign2Url ="http://"+iphoste+":8080/custommer/signup2";
@@ -33,6 +33,14 @@ public class AllUrls {
 
     public static String achatMs="http://"+iphoste+":8080/maison/achat/";
 
-   // public static String userinformationtool="http://"+iphoste+":8080/custommer/userpro/";
+    public static String userinformationtool2="http://"+iphoste+":8080/custommer/userpro/";
     public static String userinformationtool="http://"+iphoste+":8080/custommer/listuser/";
+
+
+    public static String userinfDell="http://"+iphoste+":8080/maison/delete/";
+
+    public static String userlogin="http://"+iphoste+":8080/custommer/listuser/authontif/";
+
+
+    public static String getmsJSON="http://"+iphoste+":8080/maison/listmaisJSON/";
 }

@@ -39,7 +39,7 @@
                     android:layout_width="390dp"
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="205dp"
+                    android:layout_marginTop="200dp"
             >
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -174,6 +174,7 @@
                         android:layout_height="36dp"
                         android:src="@drawable/ic_block_black_24dp"/>
                 <TextView
+                        android:clickable="true"
                         android:textStyle="bold"
                         android:id="@+id/passwordforuser"
                         android:layout_gravity="center_vertical"
@@ -193,8 +194,9 @@
                         android:layout_height="36dp"
                         android:src="@drawable/ic_forum_black_24dp"/>
                 <TextView
+                        android:id="@+id/intwp"
                         android:textStyle="bold"
-
+                        android:clickable="true"
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -203,14 +205,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
+        <!--Button
                 android:textColor="#fff"
                 android:background="@drawable/buttonstyleithgradient"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Modify"/>
+                android:text="Modify"/-->
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

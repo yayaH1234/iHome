@@ -70,6 +70,18 @@
                   android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity android:name=".modOrDelActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+         </activity>
+        <activity android:name=".SuppressMaisActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".ModiffMaisActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyCVVEjN680WnvnDi-2o-vhxqpmy5Dns0Cs"/>

@@ -84,7 +84,14 @@ public class MainActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
         final RequestQueue queue = Singleton.getInstance(MainActivity.this).getRequestQueue();// Volley.newRequestQueue(this);
 
-        final String url = AllUrls.userinformationtool+"grub@gmail.com";
+
+        Bundle extras = getIntent().getExtras();
+        Toast.makeText(MainActivity.this,"Your email "+extras.getString("email"),Toast.LENGTH_LONG).show();
+
+
+        final String url = AllUrls.userinformationtool+extras.getString("email");
+
+
         final String id ;
         final String name;
         final String email ;
