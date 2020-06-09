@@ -4,7 +4,7 @@ public class AllUrls {
 
     //users (Custommers)
   //  private static String iphoste="192.168.1.108";Ù
-    private static String iphoste="192.168.1.107";
+    private static String iphoste="192.168.1.108";
 
     public static String sign1Url =  "http://"+iphoste+":8080/custommer/signup1";
     public static String sign2Url ="http://"+iphoste+":8080/custommer/signup2";

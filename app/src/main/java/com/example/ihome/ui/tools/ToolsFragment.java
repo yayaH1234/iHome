@@ -77,7 +77,7 @@ public class ToolsFragment extends Fragment {
         final RequestQueue queue = Singleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();// Volley.newRequestQueue(this);
 
 
-        Bundle extras = getActivity().getIntent().getExtras();
+        final Bundle extras = getActivity().getIntent().getExtras();
         Toast.makeText(getActivity(),"Your email "+extras.getString("email"),Toast.LENGTH_LONG).show();
 
 
@@ -221,6 +221,8 @@ public class ToolsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), modOrDelActivity.class);
+
+                intent.putExtra("email",extras.getString("email"));
                 startActivity(intent);
             }
         });

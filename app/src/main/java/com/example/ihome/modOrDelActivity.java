@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -21,6 +22,10 @@ public class modOrDelActivity extends AppCompatActivity {
 
 
 
+        Bundle extras = getIntent().getExtras();
+        final  String asp=extras.getString("email");
+        Toast.makeText(modOrDelActivity.this,"Your email "+asp,Toast.LENGTH_LONG).show();
+
 
         supp = (Button) findViewById(R.id.dellll);
 
@@ -32,6 +37,7 @@ public class modOrDelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(modOrDelActivity.this, SuppressMaisActivity.class);
 
+                intent.putExtra("email",asp);
                 startActivity(intent);
             }
         });
@@ -40,6 +46,7 @@ public class modOrDelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(modOrDelActivity.this, ModiffMaisActivity.class);
 
+                intent.putExtra("email",asp);
                 startActivity(intent);
             }
         });

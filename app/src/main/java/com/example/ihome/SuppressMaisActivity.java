@@ -28,6 +28,10 @@ public class SuppressMaisActivity extends AppCompatActivity {
         dellhome = (EditText) findViewById(R.id.homedelll);
         send = (Button) findViewById(R.id.valid2);
 
+
+        final Bundle extras = getIntent().getExtras();
+        Toast.makeText(SuppressMaisActivity.this,"Your email "+extras.getString("email"),Toast.LENGTH_LONG).show();
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +41,7 @@ public class SuppressMaisActivity extends AppCompatActivity {
                 // Instantiate the RequestQueue.
                 final RequestQueue queue = Singleton.getInstance(SuppressMaisActivity.this).getRequestQueue();// Volley.newRequestQueue(this);
 
-                final String url = AllUrls.userinfDell+idOrName+"___email";
+                final String url = AllUrls.userinfDell+idOrName+"___"+extras.getString("email");
 
                 // Request a string response from the provided URL.
                 final StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url,
