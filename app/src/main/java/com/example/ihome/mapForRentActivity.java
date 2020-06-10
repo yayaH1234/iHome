@@ -341,7 +341,7 @@ public class mapForRentActivity extends AppCompatActivity implements LocationLis
                             markerOptions.position(latLng);
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                             googleMap.addMarker(markerOptions);
-                        i+=2;
+                                i+=2;
                         }
 
 

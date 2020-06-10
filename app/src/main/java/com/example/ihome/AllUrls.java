@@ -43,4 +43,12 @@ public class AllUrls {
 
 
     public static String getmsJSON="http://"+iphoste+":8080/maison/listmaisJSON/";
+
+
+    public static String maistestprop="http://"+iphoste+":8080/maison/verifieMs/";
+
+
+    public static String getpropformod1="http://"+iphoste+":8080/maison/verifieMs/";
+
+
 }
