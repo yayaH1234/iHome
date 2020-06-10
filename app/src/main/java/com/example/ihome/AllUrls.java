@@ -48,7 +48,11 @@ public class AllUrls {
     public static String maistestprop="http://"+iphoste+":8080/maison/verifieMs/";
 
 
-    public static String getpropformod1="http://"+iphoste+":8080/maison/verifieMs/";
+    public static String getpropformod1="http://"+iphoste+":8080/custommer/modiff1/get/";
+    public static String getpropformod2="http://"+iphoste+":8080/custommer/modiff2/get/";
 
 
+    public static String setpropformod1="http://"+iphoste+":8080/custommer/modiff1";
+    public static String setpropformod2="http://"+iphoste+":8080/custommer/modiff2";
+    public static String setpropformod3="http://"+iphoste+":8080/custommer/modiff3";
 }

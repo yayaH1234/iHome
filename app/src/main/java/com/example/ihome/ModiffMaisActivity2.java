@@ -15,14 +15,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import com.android.volley.*;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ihome.ui.slideshow.SlideshowFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModiffMaisActivity2 extends AppCompatActivity implements LocationListener, OnMapReadyCallback {
     private LocationManager lm;
@@ -39,6 +46,8 @@ public class ModiffMaisActivity2 extends AppCompatActivity implements LocationLi
     private String lng;
     private String mais_name;
     private String email;
+
+    String[] res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,52 @@ public class ModiffMaisActivity2 extends AppCompatActivity implements LocationLi
 
         mapFragment.getMapAsync(this);
         Button back = (Button) findViewById(R.id.back);
+
+
+
+        // Instantiate the RequestQueue.
+        final RequestQueue queue = Singleton.getInstance(ModiffMaisActivity2.this).getRequestQueue();// Volley.newRequestQueue(this);
+
+        final String url = AllUrls.getpropformod2+mais_name;
+
+        // Request a string response from the provided URL.
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+
+                        res=response.toString().substring(1, response.toString().length() - 1).split(",");
+
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.title("Home position");
+
+
+
+                        double d1=Double.parseDouble(res[0]);
+
+                        Log.d("mapForRentActivity","valeur d1 "+d1);
+                        double d2=Double.parseDouble(res[1]);
+                        Log.d("mapForRentActivity","valeur d2 "+d2);
+                        LatLng latLng=new LatLng(d1,d2);
+
+
+                        markerOptions.position(latLng);
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                        googleMap.addMarker(markerOptions);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // textView.setText("That didn't work!");
+                Toast.makeText(ModiffMaisActivity2.this, "Error Server ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,9 +212,42 @@ public class ModiffMaisActivity2 extends AppCompatActivity implements LocationLi
 
                         lat=location.getLatitude()+"";
                         lng=location.getLongitude()+"";
-                        Toast.makeText(ModiffMaisActivity2.this,lat+" "+lng,Toast.LENGTH_LONG).show();
-                        intent.putExtra("lat",lat);
-                        intent.putExtra("lng",lng);
+
+
+/*                          ùodozjigiif,pooez,gfozef,oek,fo,kdo,fzoe,foezf*/
+                        String requestUrl = AllUrls.setpropformod2;
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("Volley Result", ""+response); //the response contains the result from the server, a json string or any other object returned by your server
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
+
+                            }
+                        }){
+
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> postMap = new HashMap<>();
+                                postMap.put("eml",email);
+                                postMap.put("nom_mais", mais_name);
+                                postMap.put("attitude", lat);
+                                postMap.put("longiture", lng);
+
+
+
+                                //..... Add as many key value pairs in the map as necessary for your request
+                                return postMap;
+                            }
+                        };
+                        //make the request to your server as indicated in your request url
+                        Volley.newRequestQueue(ModiffMaisActivity2.this).add(stringRequest);
+
+
                         intent.putExtra("nom_maison", mais_name);
                         intent.putExtra("email", email);
                         startActivity(intent);

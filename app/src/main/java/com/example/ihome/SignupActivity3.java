@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,9 +22,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignupActivity3 extends AppCompatActivity {
+public class SignupActivity3 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private EditText questSec;
+
     private EditText repsec;
     private EditText numeT;
     private Button valid;
@@ -39,6 +37,10 @@ public class SignupActivity3 extends AppCompatActivity {
     private String numero;
     private Bitmap bitmap;
     private String numer;
+    private Spinner questSec;
+
+    private String selected_val;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,10 +50,22 @@ public class SignupActivity3 extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
    //      num = extras.getString("num");
-        questSec = (EditText) findViewById(R.id.questSec);
+
+        questSec=(Spinner)findViewById(R.id.questSec);
+
+
+    //    questSec = (EditText) findViewById(R.id.questSec);
+
+
         repsec = (EditText) findViewById(R.id.replyquest);
         valid = (Button) findViewById(R.id.signup);
 
+    //    Spinner spinner=findViewById(R.id.qstsec);
+
+        ArrayAdapter<CharSequence> adapter =ArrayAdapter.createFromResource(this,R.array.lit,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        questSec.setAdapter(adapter);
+        questSec.setOnItemSelectedListener(this);
  //       numeT = (EditText)findViewById(R.id.telephone);
 
      //   Bundle extras = getIntent().getExtras();
@@ -70,12 +84,14 @@ public class SignupActivity3 extends AppCompatActivity {
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String qstsec=questSec.getText().toString();
+            String qstsec=selected_val;
             String rpsc=repsec.getText().toString();
 
                 /*,numer*/
-signUp (qstsec,rpsc,Email);
-
+        signUp (qstsec,rpsc,Email);
+                Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -174,6 +190,18 @@ signUp (qstsec,rpsc,Email);
 
 
 
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //selected_val=questSec.getSelectedItem().toString();
+        selected_val=parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(),selected_val,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
