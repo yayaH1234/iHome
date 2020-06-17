@@ -274,7 +274,7 @@ public class mapForRentActivity extends AppCompatActivity implements LocationLis
     }
 
     @Override
-    public void onMapReady(final GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {
         mMap=googleMap;
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
 
@@ -330,18 +330,18 @@ public class mapForRentActivity extends AppCompatActivity implements LocationLis
 
                             Log.d("mapForRentActivity","Adding title "+i);
                             i++;
-                            double d1=Double.parseDouble(res[i].toString());
+                            double d1=Double.parseDouble(res[i]);
 
                             Log.d("mapForRentActivity","valeur d1 "+d1);
-                            double d2=Double.parseDouble(res[i+1].toString());
+                            double d2=Double.parseDouble(res[i+1]);
                             Log.d("mapForRentActivity","valeur d2 "+d2);
                             LatLng latLng=new LatLng(d1,d2);
 
                             Log.d("mapForRentActivity","Adding Marker "+i);
                             markerOptions.position(latLng);
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                            googleMap.addMarker(markerOptions);
-                                i+=2;
+                            mMap.addMarker(markerOptions);
+                            i+=2;
                         }
 
 

@@ -241,7 +241,7 @@ public class addMaisonActivity3 extends AppCompatActivity {
 
     private void postMaison(final Bitmap imageBitmap,final String mais_name, final String owner_name , final String service , final String adress , final String Price) {
 
-        String requestURL = "http://192.168.1.107:8080/maison/addM";
+        String requestURL = AllUrls.addMaisonUrl;//"http://192.168.1.109:8080/maison/addM";
 
 
 

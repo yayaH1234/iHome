@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             nameuser.setText(name);
                             eml.setText(email);
-                            Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+        //                  Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
                             imageView.setImageBitmap(decodedByte);
 
 

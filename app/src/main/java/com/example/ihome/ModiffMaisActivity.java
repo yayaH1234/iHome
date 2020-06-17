@@ -37,7 +37,7 @@ public class ModiffMaisActivity extends AppCompatActivity {
             // Instantiate the RequestQueue.
             final RequestQueue queue = Singleton.getInstance(ModiffMaisActivity.this).getRequestQueue();// Volley.newRequestQueue(this);
 
-            final String url = AllUrls.maistestprop+extras.getString("email")+"___"+nomMs;
+            final String url = AllUrls.maistestprop+extras.getString("email")+"__"+nomMs;
 
             // Request a string response from the provided URL.
             final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

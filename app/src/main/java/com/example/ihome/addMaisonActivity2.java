@@ -174,7 +174,6 @@ public class addMaisonActivity2 extends AppCompatActivity implements LocationLis
         LatLng googleLocation = new LatLng(location.getLatitude(), location.getLongitude());
         if(googleMap != null ){
             googleMap.clear();
-
             googleMap.addMarker(Moi);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
 

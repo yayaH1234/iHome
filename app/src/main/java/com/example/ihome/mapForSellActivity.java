@@ -325,10 +325,10 @@ public class mapForSellActivity extends AppCompatActivity implements LocationLis
 
                             Log.d("mapForRentActivity","Adding title "+i);
                             i++;
-                            double d1=Double.parseDouble(res[i].toString());
+                            final double d1=Double.parseDouble(res[i]);
 
                             Log.d("mapForRentActivity","valeur d1 "+d1);
-                            double d2=Double.parseDouble(res[i+1].toString());
+                            final double d2=Double.parseDouble(res[i+1]);
                             Log.d("mapForRentActivity","valeur d2 "+d2);
                             LatLng latLng=new LatLng(d1,d2);
 
